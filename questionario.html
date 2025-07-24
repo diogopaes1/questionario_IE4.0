@@ -335,58 +335,54 @@
             return Date.now().toString() + '_' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
         }
 
-        // SUBSTITUA esta parte do código no questionario.html:
-document.getElementById('questionario-form').addEventListener('submit', function(event) {
-    event.preventDefault();
+        document.getElementById('questionario-form').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-    const userId = document.getElementById('user-identifier').value.trim();
-    const messageArea = document.getElementById('message-area');
-    messageArea.innerHTML = '';
+            const userId = document.getElementById('user-identifier').value.trim();
+            const messageArea = document.getElementById('message-area');
+            messageArea.innerHTML = '';
 
-    if (!userId) {
-        messageArea.innerHTML = '<div class="error-message">Por favor, preencha seu ID ou Nome para enviar as respostas.</div>';
-        document.getElementById('user-identifier').focus();
-        return;
-    }
+            if (!userId) {
+                messageArea.innerHTML = '<div class="error-message">Por favor, preencha seu ID ou Nome para enviar as respostas.</div>';
+                document.getElementById('user-identifier').focus();
+                return;
+            }
 
-    const scores = calculateScores();
-    const submissionId = generateUniqueIdForSubmission();
+            const scores = calculateScores();
+            const submissionId = generateUniqueIdForSubmission();
 
-    const submissionData = {
-        submissionId: submissionId,
-        userId: userId,
-        timestamp: new Date().toISOString(),
-        engajamento: parseFloat(scores.engajamento.toFixed(2)),
-        bemEstar: parseFloat(scores.bemEstar.toFixed(2)),
-        estresse: parseFloat(scores.estresse.toFixed(2))
-    };
+            const submissionData = {
+                submissionId: submissionId,
+                userId: userId,
+                timestamp: new Date().toISOString(),
+                engajamento: parseFloat(scores.engajamento.toFixed(2)),
+                bemEstar: parseFloat(scores.bemEstar.toFixed(2)),
+                estresse: parseFloat(scores.estresse.toFixed(2))
+            };
 
-           // SUBSTITUA ESTA URL pela URL do seu Google Apps Script
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPhgxVLHHSCo8ooqn048wLtKAlHPsw_YMoJHL162SkjFxqtOTmuQ3cdk89Nq3BYB6w/exec';
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPhgxVLHHSCo8ooqn048wLtKAlHPsw_YMoJHL162SkjFxqtOTmuQ3cdk89Nq3BYB6w/exec';
 
-    messageArea.innerHTML = '<div style="text-align: center; color: #4a90e2;">Enviando respostas...</div>';
+            messageArea.innerHTML = '<div style="text-align: center; color: #4a90e2;">Enviando respostas...</div>';
 
-    fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            messageArea.innerHTML = '<div class="success-message">Respostas enviadas com sucesso! Obrigado pela participação.</div>';
-            resetForm();
-        } else {
-            throw new Error('Erro na resposta do servidor');
-        }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        messageArea.innerHTML = '<div class="error-message">Erro ao enviar respostas. Por favor, tente novamente.</div>';
-    });
-});        document.getElementById('reset').addEventListener('click', function() {
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(submissionData)
+            })
+            .then(() => {
+                messageArea.innerHTML = '<div class="success-message">Respostas enviadas com sucesso! Obrigado pela participação.</div>';
+                resetForm();
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                messageArea.innerHTML = '<div class="error-message">Erro ao enviar respostas. Por favor, tente novamente.</div>';
+            });
+        });
+
+        document.getElementById('reset').addEventListener('click', function() {
             resetForm();
             document.getElementById('message-area').innerHTML = '';
         });
