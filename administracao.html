@@ -188,16 +188,16 @@
         </table>
 
         <div id="no-data-info" class="no-data-message" style="display: none;">
-            Nenhum dado de questionário encontrado. Por favor, envie respostas via <a href="questionario.html" target="_blank">questionario.html</a>.
+            Nenhum dado de questionário encontrado. Por favor, envie respostas via <a href="questionario.html" >questionario.html</a>.
         </div>
 
         <button class="clear-data-btn" id="clearDataBtn">Limpar Todos os Dados</button>
     </div>
 
     <script>
-        // FUNÇÃO ATUALIZADA COM SUA URL DO GOOGLE SCRIPT
         function loadResponses() {
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPhgxVLHHSCo8ooqn048wLtKAlHPsw_YMoJHL162SkjFxqtOTmuQ3cdk89Nq3BYB6w/exec';
+            // URL ATUALIZADA DO GOOGLE APPS SCRIPT
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2OubineepVBHoY7uTeoS_VjLrenqJ2dDe7ObNZVV88gU1jedoeQ2SQyX6zMvxmmfv/exec';
             
             const corpoTabela = document.getElementById('corpo-tabela');
             const noDataInfo = document.getElementById('no-data-info');
